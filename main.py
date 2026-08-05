@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import math as m
+import pygame
 
 class Pendulum:
     def __init__(self, length, mass, initial_angle):
@@ -43,19 +44,61 @@ class Pendulum:
                 break
         return angles[:running_index+1], times[:running_index+1], running_index
 
+def single_oscillation_plot():
+    pendulum = Pendulum(length=1, mass=1.0, initial_angle=m.radians(10))  # Create a pendulum with length 0.5 m, mass 1 kg, and initial angle of 30 degrees
+    print(pendulum.time_period)  # Print the time period for verification
+        
+    truncated_angles, truncated_times, maximumg_index = pendulum.generate_single_oscillation_data(dt=0.001)  # Generate motion data for a single oscillation with a time step of 0.01 seconds
+
+    print(truncated_times[0], truncated_angles[0])  # Print the first time and angle for verification
+    print(truncated_times[-1], truncated_angles[-1])  # Print the last time and angle for verification
+
+    plt.plot(truncated_times, truncated_angles)
+    plt.xlabel('Time (s)')
+    plt.ylabel('Angle (radians)')
+    plt.title('Pendulum Motion')
+    plt.grid(True)
+    plt.show()
+
+def run_pygame_simulation():
+    pygame.init()
+    screen = pygame.display.set_mode((800, 600))
+    clock = pygame.time.Clock()
+    frame_rate = 120
+    dt = 1 / frame_rate  # Time step for the simulation
+
+    pendulum = Pendulum(length=0.5, mass=0.5, initial_angle=m.radians(50))
+    truncated_angles, truncated_times, maximumg_index = pendulum.generate_single_oscillation_data(dt=dt)
+  
+    i = 0
+
+    running = True
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+
+        # Clear the screen
+        screen.fill((255, 255, 255))
+
+        # Calculate the position of the pendulum bob
+        x = 400 + 3 * 100 * m.sin(truncated_angles[i])
+        y = 100 + 3 * 100 * m.cos(truncated_angles[i])
+
+        i += 1
+        if i >= len(truncated_angles):
+            i = 0  # Loop back to the start of the oscillation
+
+        # Draw the pendulum rod
+        pygame.draw.line(screen, (0, 0, 0), (400, 100), (x, y), 2)
+        # Draw the pendulum bob
+        pygame.draw.circle(screen, (255, 0, 0), (int(x), int(y)), 45)
+
+        pygame.display.flip()
+        clock.tick(frame_rate)  # Limit to the specified frame rate
+
+    pygame.quit()
     
-
-pendulum = Pendulum(length=1, mass=1.0, initial_angle=m.radians(10))  # Create a pendulum with length 0.5 m, mass 1 kg, and initial angle of 30 degrees
-print(pendulum.time_period)  # Print the time period for verification
+if __name__ == "__main__":
     
-truncated_angles, truncated_times, maximumg_index = pendulum.generate_single_oscillation_data(dt=0.001)  # Generate motion data for a single oscillation with a time step of 0.01 seconds
-
-print(truncated_times[0], truncated_angles[0])  # Print the first time and angle for verification
-print(truncated_times[-1], truncated_angles[-1])  # Print the last time and angle for verification
-
-plt.plot(truncated_times, truncated_angles)
-plt.xlabel('Time (s)')
-plt.ylabel('Angle (radians)')
-plt.title('Pendulum Motion')
-plt.grid(True)
-plt.show()
+    run_pygame_simulation()
