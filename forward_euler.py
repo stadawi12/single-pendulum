@@ -67,7 +67,7 @@ def run_pygame_simulation():
     frame_rate = 120
     dt = 1 / frame_rate  # Time step for the simulation
 
-    pendulum = Pendulum(length=0.5, mass=0.5, initial_angle=m.radians(50))
+    pendulum = Pendulum(length=0.5, mass=0.5, initial_angle=m.radians(150))
     truncated_angles, truncated_times, maximumg_index = pendulum.generate_single_oscillation_data(dt=dt)
   
     i = 0
