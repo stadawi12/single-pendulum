@@ -2,6 +2,10 @@ import matplotlib.pyplot as plt
 import math as m
 import pygame
 
+"""
+A simple pendulum simulation using the forward Euler method.
+"""
+
 class Pendulum:
     def __init__(self, length, mass, initial_angle):
         self.length = length
