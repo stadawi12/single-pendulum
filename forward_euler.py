@@ -38,7 +38,7 @@ class Pendulum:
         return times, angles
 
     def generate_single_oscillation_data(self, dt):
-        times, angles = self.generate_motion_data(duration=self.time_period * 1.5, dt=dt)
+        times, angles = self.generate_motion_data(duration=self.time_period, dt=dt)
         running_index = 0
         for i, current_angle in enumerate(angles):
             previous_angle = angles[i - 1] if i > 0 else current_angle + 1  # Ensure the first angle is not considered a maximum
@@ -64,14 +64,22 @@ def single_oscillation_plot():
     plt.grid(True)
     plt.show()
 
-def run_pygame_simulation():
+def run_pygame_simulation(initial_angle_degrees=40, length=0.5, mass=0.5, dt=0.01):
+    """
+    Run a simple pendulum simulation using Pygame.
+    The code will generate a single oscillation of the pendulum and loop through it to create a continuous animation.
+    :param initial_angle_degrees: Initial angle of the pendulum in degrees.
+    :param length: Length of the pendulum.
+    :param mass: Mass of the pendulum bob.
+    :param dt: Time step for the simulation.
+    """
     pygame.init()
     screen = pygame.display.set_mode((800, 600))
     clock = pygame.time.Clock()
     frame_rate = 120
     dt = 1 / frame_rate  # Time step for the simulation
 
-    pendulum = Pendulum(length=0.5, mass=0.5, initial_angle=m.radians(150))
+    pendulum = Pendulum(length=length, mass=mass, initial_angle=m.radians(initial_angle_degrees))
     truncated_angles, truncated_times, maximumg_index = pendulum.generate_single_oscillation_data(dt=dt)
   
     i = 0
