@@ -4,8 +4,6 @@ A small Python project that simulates the motion of a simple pendulum using the 
 
 ## Example
 
-![Animated example of the pendulum simulation](assets/pendulum%20gif.gif)
-
 <p align="center">
     <img src="assets/pendulum gif.gif" width=30% height=30%>
 </p>
